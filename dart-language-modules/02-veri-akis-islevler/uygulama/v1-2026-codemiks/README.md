@@ -6,7 +6,7 @@ Konu: Dart dili, Veri, Akış ve İşlevler (Types, Patterns, Control flow, Func
 Bu klasörde iki şey var:
 
 1. **`main.dart`**: Konuların hepsini tek bir senaryoda kullanan bir konsol uygulaması. Uygulama öğrenci kayıtlarını ham veriden (JSON benzeri map'lerden) okur, doğrular, değerlendirir ve rapor üretir.
-2. **`cods/`** ve **`dart-dil-rehberi.pdf`**: dart.dev'deki 246 kod örneğinin çalıştırılabilir halleri ve Türkçe rehber. PDF'teki her kod kutusuna tıklayınca ilgili dosya açılır. Bunun için PDF ile `cods/` klasörü yan yana durmalıdır.
+2. **`cods/`** ve **`../../sunum/2026-guz-codemiks.pdf`**: dart.dev'deki 246 kod örneğinin çalıştırılabilir halleri ve Türkçe rehber. PDF'teki her kod kutusuna tıklayınca `cods/` içindeki ilgili dosya açılır. Bunun için depodaki klasör yapısı (`sunum/` ve `uygulama/` yan yana) korunmalıdır.
 
 ## Çalıştırma
 
