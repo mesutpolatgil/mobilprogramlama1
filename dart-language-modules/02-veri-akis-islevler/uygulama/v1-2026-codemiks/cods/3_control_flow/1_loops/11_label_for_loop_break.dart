@@ -1,0 +1,12 @@
+void main() {
+  outerLoop:
+  for (var i = 1; i <= 3; i++) {
+    for (var j = 1; j <= 3; j++) {
+      print('i = $i, j = $j');
+      if (i == 2 && j == 2) {
+        break outerLoop;
+      }
+    }
+  }
+  print('outerLoop exited');
+}
