@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dAppAccessibilityAuditor - Canlı Mobil Simülatör</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Mobile frame & custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.6); }
+    .code-font { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased min-h-screen p-4 md:p-8 flex flex-col items-center justify-center">
+
+  <!-- Main Container: Mobile Mockup Frame -->
+  <div id="appContainer" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[860px] relative transition-colors duration-300">
+    
+    <!-- Top Mobile Status Bar -->
+    <div class="bg-slate-950/80 px-5 py-2 flex items-center justify-between text-xs text-slate-400 border-b border-slate-800/80 select-none">
+      <span class="font-semibold text-slate-300">09:41</span>
+      <div class="flex items-center space-x-2">
+        <span class="text-[11px] bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded-full font-bold">Web3 Mainnet</span>
+        <span>5G</span>
+        <span>100%</span>
+      </div>
+    </div>
+
+    <!-- App Bar -->
+    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 px-4 py-3 flex items-center justify-between z-10">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400 font-bold">
+          🛡️
+        </div>
+        <div>
+          <h1 class="font-bold text-base text-white tracking-tight flex items-center gap-1.5">
+            dApp Denetçisi
+            <span class="text-xs font-normal text-sky-400 bg-sky-950 px-1.5 py-0.5 rounded border border-sky-800">WCAG 2.1</span>
+          </h1>
+          <p class="text-xs text-slate-400">Web3 Mobil Erişilebilirlik Motoru</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-1">
+        <button id="toggleHighContrastBtn" title="Yüksek Kontrast Modunu Değiştir (AAA)" class="p-2 min-w-[44px] min-h-[44px] rounded-lg text-slate-300 hover:text-sky-400 hover:bg-slate-800 flex items-center justify-center transition">
+          <span class="text-lg">🌓</span>
+        </button>
+        <button id="navSandboxBtn" title="Test Laboratuvarını Aç" class="p-2 min-w-[44px] min-h-[44px] rounded-lg text-slate-300 hover:text-sky-400 hover:bg-slate-800 flex items-center justify-center transition">
+          <span class="text-lg">🧪</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Quick Accessibility Toolbar -->
+    <div class="bg-slate-950/70 border-b border-slate-800 px-3 py-2 flex items-center space-x-2 overflow-x-auto text-xs select-none">
+      <button id="toolbarHcBtn" class="px-2.5 py-1.5 min-h-[36px] rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 hover:border-sky-500 flex items-center space-x-1.5 shrink-0 transition">
+        <span>⚡</span>
+        <span id="hcLabel">Yüksek Kontrast: Kapalı</span>
+      </button>
+      <button id="toolbarScaleBtn" class="px-2.5 py-1.5 min-h-[36px] rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 hover:border-sky-500 flex items-center space-x-1.5 shrink-0 transition">
+        <span>🔍</span>
+        <span id="scaleLabel">%100 Yazı Ölçeği</span>
+      </button>
+      <button id="toolbarSemanticsBtn" class="px-2.5 py-1.5 min-h-[36px] rounded-full border border-slate-700 bg-slate-800/80 text-slate-300 hover:border-sky-500 flex items-center space-x-1.5 shrink-0 transition">
+        <span>🏷️</span>
+        <span id="semanticsLabel">Semantik Ağaç</span>
+      </button>
+    </div>
+
+    <!-- Screen Navigation Pages -->
+    <main id="mainScrollArea" class="flex-1 overflow-y-auto p-4 space-y-4">
+
+      <!-- ================= PAGE 1: DASHBOARD ================= -->
+      <section id="pageDashboard" class="space-y-4">
+        
+        <!-- Welcome Hero Banner -->
+        <div class="bg-gradient-to-br from-slate-900 via-indigo-950/50 to-slate-900 border border-sky-500/30 rounded-2xl p-4 shadow-lg">
+          <div class="flex items-center justify-between mb-2">
+            <span class="bg-sky-500/20 text-sky-400 text-xs font-bold px-2.5 py-1 rounded-full border border-sky-400/30">
+              WCAG 2.1 & EN 301 549 Motoru
+            </span>
+            <span class="text-amber-400 text-sm">⚡ 48dp Standart</span>
+          </div>
+          <h2 class="text-lg font-bold text-white">Akıllı Sözleşme Ön Yüz Denetimi</h2>
+          <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+            DeFi, NFT ve cüzdan arayüzlerinde renk kontrastı, buton dokunmatik alanları ve TalkBack/VoiceOver ekran okuyucu uyumluluğunu test edin.
+          </p>
+        </div>
+
+        <!-- Presets vs Custom Tabs -->
+        <div class="flex border-b border-slate-800 text-xs font-semibold">
+          <button id="tabPresetsBtn" class="flex-1 py-2.5 border-b-2 border-sky-400 text-sky-400 flex items-center justify-center space-x-1">
+            <span>✨</span>
+            <span>Hazır Web3 Şablonları</span>
+          </button>
+          <button id="tabCustomBtn" class="flex-1 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center justify-center space-x-1">
+            <span>💻</span>
+            <span>Özel dApp / Kod</span>
+          </button>
+        </div>
+
+        <!-- Tab 1: Presets Selector -->
+        <div id="presetsSelectorArea" class="space-y-2">
+          <div id="presetsList" class="space-y-2">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Custom Code / URL Input -->
+        <div id="customInputArea" class="hidden space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">dApp URL veya GitHub Deposu:</label>
+            <input type="text" id="customUrlInput" placeholder="https://app.uniswap.org veya github.com/..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Flutter / React / HTML Bileşen Kodu:</label>
+            <textarea id="customCodeInput" rows="4" placeholder="// Container(width: 28, height: 28, child: GestureDetector(...))" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs code-font text-slate-200 focus:outline-none focus:border-sky-500"></textarea>
+          </div>
+        </div>
+
+        <!-- Interactive Web3 Preview Card -->
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+              <span>🖥️</span> Canlı Web3 Bileşen Simülasyonu
+            </span>
+            <span id="previewTag" class="text-xs px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 font-semibold">
+              İhlaller Mevcut
+            </span>
+          </div>
+
+          <!-- Dynamic Component Sandbox Preview -->
+          <div id="liveComponentContainer" class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 min-h-[140px] flex flex-col justify-center">
+            <!-- Injected via JS based on selected preset -->
+          </div>
+        </div>
+
+        <!-- Main Action Buttons -->
+        <div class="space-y-2 pt-1">
+          <!-- Start Audit Button (Strict 48x48 min touch target guaranteed) -->
+          <button id="startAuditBtn" class="w-full min-h-[52px] bg-sky-500 hover:bg-sky-400 active:scale-[0.99] text-slate-950 font-bold text-sm rounded-xl px-4 py-3 flex items-center justify-center space-x-2 shadow-lg shadow-sky-500/20 transition">
+            <span class="text-base">🚀</span>
+            <span id="startAuditText">WCAG ve Erişilebilirlik Denetimini Başlat</span>
+          </button>
+
+          <!-- Sandbox Shortcut Button -->
+          <button id="openSandboxBtn" class="w-full min-h-[48px] bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold text-xs rounded-xl px-4 py-2.5 flex items-center justify-center space-x-2 transition">
+            <span>🔬</span>
+            <span>Renk ve Dokunmatik Hedef Test Laboratuvarı</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= PAGE 2: AUDIT RESULTS ================= -->
+      <section id="pageResults" class="hidden space-y-4">
+        
+        <!-- Score & Compliance Gauge Banner -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
+          <div class="relative w-24 h-24 shrink-0 flex items-center justify-center">
+            <svg class="w-24 h-24 transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="gaugeSvgCircle" class="text-amber-400 transition-all duration-1000 ease-out" stroke-dasharray="68, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span id="gaugeScoreNumber" class="text-2xl font-bold text-white">%68</span>
+              <span class="text-xs text-slate-400">Skor</span>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center space-x-1.5">
+              <span id="gaugeStatusIcon" class="text-amber-400">⚠️</span>
+              <span id="gaugeStatusText" class="font-bold text-sm text-amber-400">Düzeltme Gerekiyor</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-snug">
+              WCAG 2.1 AA, EN 301 549 ve 48dp mobil dokunmatik alan kurallarına göre analiz tamamlandı.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards Grid -->
+        <div class="grid grid-cols-2 gap-2.5">
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1">
+            <div class="flex justify-between items-center text-xs text-slate-400">
+              <span>Toplam Kontrol</span>
+              <span class="text-sky-400">📋</span>
+            </div>
+            <div id="metricTotalChecks" class="text-lg font-bold text-white">12 Kontrol</div>
+            <div id="metricChecksSub" class="text-[11px] text-sky-400">7 Geçti • 5 İhlal</div>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1">
+            <div class="flex justify-between items-center text-xs text-slate-400">
+              <span>Renk Kontrastı</span>
+              <span class="text-amber-400">🎨</span>
+            </div>
+            <div id="metricContrastVal" class="text-lg font-bold text-white">2 / 3 Uyumlu</div>
+            <div class="text-[11px] text-amber-400">WCAG 1.4.3 (4.5:1)</div>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1">
+            <div class="flex justify-between items-center text-xs text-slate-400">
+              <span>Dokunmatik Hedef</span>
+              <span class="text-rose-400">📱</span>
+            </div>
+            <div id="metricTouchVal" class="text-lg font-bold text-white">1 / 2 Standart</div>
+            <div class="text-[11px] text-rose-400">Min 48x48 dp Kuralı</div>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1">
+            <div class="flex justify-between items-center text-xs text-slate-400">
+              <span>Semantik & ARIA</span>
+              <span class="text-indigo-400">🗣️</span>
+            </div>
+            <div id="metricSemanticsVal" class="text-lg font-bold text-white">2 / 4 Uyumlu</div>
+            <div class="text-[11px] text-indigo-400">TalkBack / VoiceOver</div>
+          </div>
+        </div>
+
+        <!-- International Standards Compliance Badges -->
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-2">
+          <span class="text-xs font-bold text-slate-300">Uluslararası Uyumluluk Durumu</span>
+          <div class="flex flex-wrap gap-2 text-[11px]">
+            <span class="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">
+              WCAG 2.1 Seviye A: Kısmen
+            </span>
+            <span class="px-2 py-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/30 font-semibold">
+              WCAG 2.1 Seviye AA: İyileştirilmeli
+            </span>
+            <span class="px-2 py-1 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/30 font-semibold">
+              EN 301 549 (Avrupa): Bölüm 9 & 11
+            </span>
+            <span class="px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 font-semibold">
+              US Section 508: VPAT Hazır
+            </span>
+          </div>
+        </div>
+
+        <!-- Issue Severity Filter Chips -->
+        <div class="flex items-center space-x-2 overflow-x-auto text-xs py-1">
+          <button id="filterAllBtn" class="px-3 py-1.5 min-h-[36px] rounded-full bg-sky-500 text-slate-950 font-bold shrink-0">Tümü</button>
+          <button id="filterCriticalBtn" class="px-3 py-1.5 min-h-[36px] rounded-full bg-slate-800 text-rose-400 hover:bg-slate-700 border border-rose-500/30 font-semibold shrink-0">🚨 Kritik</button>
+          <button id="filterSeriousBtn" class="px-3 py-1.5 min-h-[36px] rounded-full bg-slate-800 text-amber-400 hover:bg-slate-700 border border-amber-500/30 font-semibold shrink-0">⚠️ Ciddi</button>
+          <button id="filterModerateBtn" class="px-3 py-1.5 min-h-[36px] rounded-full bg-slate-800 text-sky-400 hover:bg-slate-700 border border-sky-500/30 font-semibold shrink-0">ℹ️ Orta</button>
+        </div>
+
+        <!-- Issue Cards List -->
+        <div id="issuesContainer" class="space-y-3">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="space-y-2 pt-2">
+          <button id="openVpatBtn" class="w-full min-h-[50px] bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl px-4 py-3 flex items-center justify-center space-x-2 shadow-lg transition">
+            <span>📑</span>
+            <span>Resmi VPAT® 2.5 Uyumluluk Raporunu Aç</span>
+          </button>
+          <button id="backToDashBtn" class="w-full min-h-[44px] bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-xl px-4 py-2 flex items-center justify-center space-x-2 transition">
+            <span>⬅️</span>
+            <span>Ana Kontrol Paneline Dön</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= PAGE 3: VPAT REPORT ================= -->
+      <section id="pageVpat" class="hidden space-y-4">
+        
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-sm text-sky-400">VPAT® 2.5 Uyumluluk Beyanı</h3>
+            <span class="text-xs text-emerald-400 font-bold bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/30">
+              Resmi Şablon
+            </span>
+          </div>
+          <p class="text-xs text-slate-300">
+            Revised Section 508, WCAG 2.1 ve EN 301 549 standartlarına göre otomatik olarak oluşturuldu.
+          </p>
+        </div>
+
+        <!-- Format Selector -->
+        <div class="flex border-b border-slate-800 text-xs font-semibold">
+          <button id="vpatTabVisualBtn" class="flex-1 py-2 border-b-2 border-sky-400 text-sky-400">Görsel Tablo</button>
+          <button id="vpatTabMdBtn" class="flex-1 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">Markdown (.md)</button>
+          <button id="vpatTabJsonBtn" class="flex-1 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">JSON (.json)</button>
+        </div>
+
+        <!-- View 1: Visual Table -->
+        <div id="vpatVisualArea" class="space-y-3 text-xs">
+          <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+            <div class="bg-slate-900 px-3 py-2 font-bold text-slate-200 border-b border-slate-800">
+              WCAG 2.1 Seviye A Kriterleri
+            </div>
+            <div class="divide-y divide-slate-800/60 p-2 space-y-2" id="vpatTableA">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+            <div class="bg-slate-900 px-3 py-2 font-bold text-slate-200 border-b border-slate-800">
+              WCAG 2.1 Seviye AA Kriterleri
+            </div>
+            <div class="divide-y divide-slate-800/60 p-2 space-y-2" id="vpatTableAA">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- View 2: Raw Code Area (MD / JSON) -->
+        <div id="vpatRawArea" class="hidden">
+          <pre id="vpatRawCode" class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs code-font text-slate-300 overflow-x-auto max-h-[360px] whitespace-pre-wrap"></pre>
+        </div>
+
+        <!-- Action Export Buttons -->
+        <div class="space-y-2 pt-2">
+          <button id="copyVpatBtn" class="w-full min-h-[48px] bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl px-4 py-2.5 flex items-center justify-center space-x-2 transition">
+            <span>📋</span>
+            <span id="copyVpatText">Mevcut VPAT Raporunu Panoya Kopyala</span>
+          </button>
+          <button id="backFromVpatBtn" class="w-full min-h-[44px] bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-xl px-4 py-2 flex items-center justify-center space-x-2 transition">
+            <span>⬅️</span>
+            <span>Denetim Sonuçlarına Dön</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= PAGE 4: ACCESSIBILITY SANDBOX ================= -->
+      <section id="pageSandbox" class="hidden space-y-4">
+        
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-sm text-sky-400">Erişilebilirlik Test Laboratuvarı</h3>
+            <p class="text-xs text-slate-400">W3C Algoritmaları & Canlı Simülatör</p>
+          </div>
+          <span class="text-xl">🔬</span>
+        </div>
+
+        <!-- Sandbox Tabs -->
+        <div class="flex border-b border-slate-800 text-xs font-semibold">
+          <button id="sbTabContrastBtn" class="flex-1 py-2 border-b-2 border-sky-400 text-sky-400">Renk Kontrastı</button>
+          <button id="sbTabTargetBtn" class="flex-1 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">Dokunmatik Hedef</button>
+          <button id="sbTabTypeBtn" class="flex-1 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">Metin Büyütme</button>
+        </div>
+
+        <!-- Sandbox Area 1: Contrast Lab -->
+        <div id="sbContrastArea" class="space-y-3">
+          <div id="contrastLiveBox" class="p-4 rounded-xl border-2 border-slate-700 transition" style="background-color: #0F172A;">
+            <h4 id="contrastSampleHeading" class="font-bold text-base" style="color: #6B7280;">Uniswap Token Takas Kartı</h4>
+            <p id="contrastSampleSub" class="text-xs mt-1" style="color: #6B7280;">Ağ Ücreti: ~$4.82 (15 Gwei) • Bakiye: 42.50 ETH</p>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-2 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="text-slate-400">Hesaplanan Kontrast Oranı:</span>
+              <span id="sbContrastRatio" class="text-lg font-bold text-rose-400">2.82:1</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center text-[11px] pt-1">
+              <div id="badgeAA" class="p-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">Normal AA (4.5:1) ❌</div>
+              <div id="badgeLargeAA" class="p-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">Büyük AA (3.0:1) ❌</div>
+              <div id="badgeAAA" class="p-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">AAA (7.0:1) ❌</div>
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <span class="text-xs font-semibold text-slate-300">Örnek Renk Tonları:</span>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <button onclick="setSandboxColor('#4B5563')" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:border-sky-400">Koyu Gri (2.1:1)</button>
+              <button onclick="setSandboxColor('#6B7280')" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:border-sky-400">Soluk Gri (2.8:1)</button>
+              <button onclick="setSandboxColor('#94A3B8')" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-sky-200 hover:border-sky-400">Uyumlu Açık Gri (5.2:1)</button>
+              <button onclick="setSandboxColor('#38BDF8')" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-sky-400 hover:border-sky-400">Camgöbeği (9.4:1)</button>
+              <button onclick="setSandboxColor('#FFFFFF')" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-white hover:border-sky-400">Saf Beyaz (18:1)</button>
+            </div>
+          </div>
+
+          <button id="sbAutoFixColorBtn" class="w-full min-h-[48px] bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl px-4 py-2.5 flex items-center justify-center space-x-2 transition">
+            <span>✨</span>
+            <span>WCAG Uyumlu Rengi Otomatik Hesapla ve Uygula</span>
+          </button>
+        </div>
+
+        <!-- Sandbox Area 2: Touch Target Lab -->
+        <div id="sbTargetArea" class="hidden space-y-3">
+          <div class="h-44 bg-slate-950 border border-slate-800 rounded-xl relative flex items-center justify-center overflow-hidden">
+            <!-- 48x48 Guide Box -->
+            <div class="w-12 h-12 border-2 border-emerald-400 border-dashed rounded-lg absolute pointer-events-none flex items-center justify-center">
+              <span class="text-[9px] text-emerald-400 font-mono">48x48</span>
+            </div>
+            <!-- Dynamic Button -->
+            <div id="sbDynamicBtn" class="bg-rose-500 text-white rounded-md flex items-center justify-center text-xs font-bold transition-all duration-100" style="width: 28px; height: 28px;">
+              <span id="sbDynamicBtnLabel">28x28</span>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between">
+              <span class="text-slate-300">Genişlik: <span id="widthValText" class="font-bold text-white">28</span> dp</span>
+              <span class="text-slate-300">Yükseklik: <span id="heightValText" class="font-bold text-white">28</span> dp</span>
+            </div>
+            <input type="range" id="sbSizeSlider" min="20" max="64" value="28" class="w-full accent-sky-400">
+            <div id="sbTargetStatus" class="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold">
+              ⚠️ Standart Dışı: Android 48x48 dp kuralı için 20 dp eksik.
+            </div>
+          </div>
+        </div>
+
+        <!-- Sandbox Area 3: Dynamic Typography Lab -->
+        <div id="sbTypeArea" class="hidden space-y-3 text-xs">
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+            <span class="font-semibold text-rose-400">1. Hatalı Tasarım: Sabit Yükseklik (%200'de Metin Kırpılır)</span>
+            <div class="h-9 px-3 bg-slate-900 border border-rose-500/40 rounded-lg flex items-center overflow-hidden">
+              <span class="text-slate-300 truncate" id="sbTruncatedText">Sözleşme: 0x71C250875932D1f9E8B2947192a54366A942394A (Yazı taşması var!)</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+            <span class="font-semibold text-emerald-400">2. Doğru Tasarım: Dinamik Dolgu & Seçilebilir Metin</span>
+            <div class="p-3 bg-slate-900 border border-emerald-500/40 rounded-lg">
+              <span class="text-slate-200 break-all select-all">Sözleşme: 0x71C250875932D1f9E8B2947192a54366A942394A</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="backFromSbBtn" class="w-full min-h-[44px] bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-xl px-4 py-2 flex items-center justify-center space-x-2 transition">
+          <span>⬅️</span>
+          <span>Ana Kontrol Paneline Dön</span>
+        </button>
+
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bg-slate-950 border-t border-slate-800 px-4 py-2 flex items-center justify-around text-xs select-none">
+      <button id="bottomNavDash" class="flex flex-col items-center text-sky-400 min-w-[48px] min-h-[44px] justify-center">
+        <span class="text-base">🛡️</span>
+        <span class="text-[10px] mt-0.5 font-bold">Denetim</span>
+      </button>
+      <button id="bottomNavResults" class="flex flex-col items-center text-slate-400 hover:text-slate-200 min-w-[48px] min-h-[44px] justify-center">
+        <span class="text-base">📊</span>
+        <span class="text-[10px] mt-0.5">Sonuçlar</span>
+      </button>
+      <button id="bottomNavVpat" class="flex flex-col items-center text-slate-400 hover:text-slate-200 min-w-[48px] min-h-[44px] justify-center">
+        <span class="text-base">📑</span>
+        <span class="text-[10px] mt-0.5">VPAT Raporu</span>
+      </button>
+      <button id="bottomNavLab" class="flex flex-col items-center text-slate-400 hover:text-slate-200 min-w-[48px] min-h-[44px] justify-center">
+        <span class="text-base">🔬</span>
+        <span class="text-[10px] mt-0.5">Laboratuvar</span>
+      </button>
+    </nav>
+
+    <!-- Semantics Debugger Floating Overlay -->
+    <div id="semanticsOverlay" class="hidden absolute inset-0 bg-sky-950/40 pointer-events-none z-50 border-4 border-dashed border-sky-400/80 p-2 overflow-hidden flex flex-col justify-end">
+      <div class="bg-sky-900/95 text-sky-200 text-xs p-2.5 rounded-xl border border-sky-400 shadow-xl space-y-1">
+        <div class="font-bold flex items-center gap-1">
+          <span>🏷️</span> Flutter Semantics Debugger Aktif
+        </div>
+        <p class="text-[11px] leading-tight">
+          Tüm buton, girdi ve canlı bölge (liveRegion) semantik düğümleri ekran okuyucular (TalkBack/VoiceOver) için haritalandırılıyor.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // State management
+    const state = {
+      selectedPresetId: 'uniswap_swap',
+      isUsingCustom: false,
+      highContrast: false,
+      textScale: 1.0,
+      semanticsOverlay: false,
+      severityFilter: null,
+      vpatFormat: 'visual',
+      sandboxColor: '#6B7280',
+    };
+
+    const presets = [
+      {
+        id: 'uniswap_swap',
+        title: 'Uniswap V3 Token Takas Kartı',
+        category: 'DeFi',
+        subtitle: 'Ethereum gas sayacı ve kayma ayar çarkı',
+        score: 68,
+        previewHtml: `
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-bold text-white">Token Takası</span>
+              <div class="relative">
+                <button class="w-7 h-7 bg-slate-800 border border-rose-500 rounded flex items-center justify-center text-slate-400" title="Kayma Ayarları (28x28dp - Standart dışı)">
+                  ⚙️
+                </button>
+                <span class="absolute -top-2 -right-2 bg-rose-600 text-white text-[9px] px-1 rounded font-mono">28dp</span>
+              </div>
+            </div>
+            <div class="p-2.5 bg-slate-800 rounded-lg flex justify-between items-center text-xs">
+              <span class="font-bold text-white">1.0 ETH</span>
+              <span class="text-slate-400">~$3,240.50</span>
+            </div>
+            <div class="flex items-center space-x-2 text-xs">
+              <span style="color: #4B5563;">Ağ Ücreti: ~$4.82 (15 Gwei)</span>
+              <span class="text-[10px] bg-rose-500/20 text-rose-400 px-1.5 py-0.2 rounded border border-rose-500/30">Kontrast 2.1:1 ❌</span>
+            </div>
+            <button class="w-full min-h-[44px] bg-blue-600 text-white text-xs font-bold rounded-lg py-2">Takası Onayla</button>
+          </div>
+        `,
+        issues: [
+          {
+            id: 'IHLAL-UNI-001',
+            title: 'Ağ Gas Ücretinde Yetersiz Renk Kontrastı',
+            severity: 'serious',
+            category: 'Renk Kontrastı (WCAG 1.4.3)',
+            wcag: '1.4.3 (Seviye AA)',
+            description: 'Gas ücreti etiketinin kontrast oranı 2.1:1 olarak hesaplandı. Standart 4.5:1 eşiğinin altındadır.',
+            badCode: 'Text("Ağ Ücreti: ~\\$4.82 (15 Gwei)", style: TextStyle(color: Color(0xFF4B5563), fontSize: 13))',
+            goodCode: 'Text("Ağ Ücreti: ~\\$4.82 (15 Gwei)", style: TextStyle(color: Color(0xFF94A3B8), fontSize: 13)) // Kontrast 5.2:1 (BAŞARILI)',
+            advice: 'Koyu temalarda gri tonları #94A3B8 veya üstüne çıkararak en az 4.5:1 kontrast oranını yakalayın.'
+          },
+          {
+            id: 'IHLAL-UNI-002',
+            title: 'Kayma Ayarı Butonu Minimum Dokunmatik Hedefini Karşılamıyor',
+            severity: 'critical',
+            category: 'Dokunmatik Hedef (WCAG 2.5.5)',
+            wcag: '2.5.5 (Seviye AAA)',
+            description: 'Etkileşimli ayar butonu 28x28 dp ölçülerindedir. Android (48x48 dp) kuralını ihlal etmektedir.',
+            badCode: 'GestureDetector(onTap: openSlippage, child: Container(width: 28, height: 28, child: Icon(Icons.settings)))',
+            goodCode: 'IconButton(icon: const Icon(Icons.settings), constraints: const BoxConstraints(minWidth: 48, minHeight: 48), onPressed: openSlippage)',
+            advice: 'Tıklanabilir tüm Web3 butonlarında BoxConstraints ile en az 48x48 dp dokunmatik alan sağlayın.'
+          },
+          {
+            id: 'IHLAL-UNI-003',
+            title: 'Etiketsiz ve Rolü Tanımsız Buton',
+            severity: 'serious',
+            category: 'Semantik & ARIA (WCAG 4.1.2)',
+            wcag: '4.1.2 (Seviye A)',
+            description: 'Butonun semantik rolü tanımlanmamış. Ekran okuyucular kullanıcıya sadece "Etiketsiz Düğme" seslendirir.',
+            badCode: 'GestureDetector(onTap: openSlippage, child: Icon(Icons.settings))',
+            goodCode: 'Semantics(button: true, label: "İşlem kayma toleransı ayarları", child: IconButton(...))',
+            advice: 'İkon butonlarını Semantics içine sarıp button: true ve açıklayıcı etiket ekleyin.'
+          },
+          {
+            id: 'IHLAL-UNI-004',
+            title: 'Dinamik Gas Ücretinde Canlı Bildirim (Live Region) Eksik',
+            severity: 'moderate',
+            category: 'Durum Mesajları (WCAG 4.1.3)',
+            wcag: '4.1.3 (Seviye AA)',
+            description: 'Gas tahminleri blok başına (12 sn) güncelleniyor ancak Semantics(liveRegion: true) bildirimi bulunmuyor.',
+            badCode: 'Text("Ağ Ücreti: ~\\$4.82 (15 Gwei)")',
+            goodCode: 'Semantics(liveRegion: true, label: "Güncel ağ gas ücreti 15 Gwei", child: Text(...))',
+            advice: 'Anlık blok zincir verilerine liveRegion: true ekleyerek ekran okuyucunun otomatik duyurmasını sağlayın.'
+          }
+        ]
+      },
+      {
+        id: 'opensea_mint',
+        title: 'OpenSea NFT Basım (Mint) Kartı',
+        category: 'NFT',
+        subtitle: 'Adet seçici ve koleksiyon görseli önizlemesi',
+        score: 74,
+        previewHtml: `
+          <div class="space-y-3 text-center">
+            <div class="h-20 bg-slate-800 rounded-lg flex flex-col items-center justify-center border border-amber-500/40 relative">
+              <span class="text-2xl">🖼️</span>
+              <span class="text-xs font-bold text-white mt-1">CyberPunk #4021</span>
+              <span class="absolute top-1 right-1 text-[9px] bg-amber-500/20 text-amber-300 px-1 rounded">Alt Etiket Eksik</span>
+            </div>
+            <div class="flex items-center justify-center space-x-3">
+              <button class="w-7 h-7 bg-slate-800 border border-rose-500 rounded text-white font-bold text-sm">-</button>
+              <span class="text-sm font-bold text-white">1</span>
+              <button class="w-7 h-7 bg-slate-800 border border-rose-500 rounded text-white font-bold text-sm">+</button>
+            </div>
+            <span class="text-xs text-slate-400 block">Kapanış: 02:45:12 (Canlı Bölge Eksik)</span>
+          </div>
+        `,
+        issues: [
+          {
+            id: 'IHLAL-MINT-001',
+            title: 'NFT Adet Değiştirici Butonlar Fazla Küçük (30x30 dp)',
+            severity: 'critical',
+            category: 'Dokunmatik Hedef (WCAG 2.5.5)',
+            wcag: '2.5.5 (Seviye AAA)',
+            description: 'Adet seçici butonlar 30x30 dp boyutunda olduğundan minimum 48x48 dp standardını karşılamamaktadır.',
+            badCode: 'InkWell(onTap: decrement, child: Container(width: 30, height: 30, child: Text("-")))',
+            goodCode: 'SizedBox(width: 48, height: 48, child: IconButton(icon: Icon(Icons.remove), onPressed: decrement))',
+            advice: 'Adet seçicileri en az 48x48 dp boyutunda IconButton ile sarmalayın.'
+          },
+          {
+            id: 'IHLAL-MINT-002',
+            title: 'NFT Görsel Önizlemesinde Açıklama (Alt) Eksik',
+            severity: 'serious',
+            category: 'Semantik & ARIA (WCAG 4.1.2)',
+            wcag: '4.1.2 (Seviye A)',
+            description: 'Ağdan çekilen NFT görselinde görsel içeriği açıklayan semantik etiket (Semantics label) bulunmuyor.',
+            badCode: 'Image.network("https://nft.storage/drop1.png")',
+            goodCode: 'Semantics(label: "CyberPunk #4021: Lazer vizörlü piksel avatar", image: true, child: Image.network(...))',
+            advice: 'tokenURI içindeki başlık ve özellikleri Semantics(label: ...) alanına aktarın.'
+          }
+        ]
+      },
+      {
+        id: 'rainbowkit_connect',
+        title: 'RainbowKit Cüzdan Bağlantısı',
+        category: 'Cüzdan',
+        subtitle: 'Web3 Cüzdan Girişi, Ağ Rozeti ve Oturum Yönetimi',
+        score: 82,
+        previewHtml: `
+          <div class="flex items-center justify-between p-2 bg-slate-800 rounded-lg">
+            <span class="px-2 py-1 bg-emerald-950 text-emerald-400 text-xs rounded-full border border-emerald-500/40 font-semibold">● Ethereum</span>
+            <div class="flex items-center space-x-2">
+              <span class="text-xs text-slate-300 font-mono">0x71C...394A</span>
+              <button class="w-8 h-8 rounded-full bg-slate-700 border border-rose-500 flex items-center justify-center text-xs" title="Çıkış Yap">⏻</button>
+            </div>
+          </div>
+        `,
+        issues: [
+          {
+            id: 'IHLAL-CUZDAN-001',
+            title: 'Cüzdan Bağlantısını Kesme Butonunda Semantik Etiket Eksik',
+            severity: 'critical',
+            category: 'Semantik & ARIA (WCAG 4.1.2)',
+            wcag: '4.1.2 (Seviye A)',
+            description: 'İkon butonda aria-label veya Semantics etiketi yok. VoiceOver yalnızca "Düğme" olarak okur.',
+            badCode: 'GestureDetector(onTap: disconnect, child: Icon(Icons.power_settings_new))',
+            goodCode: 'IconButton(icon: Icon(Icons.power_settings_new), tooltip: "Cüzdan oturumunu sonlandır", constraints: BoxConstraints(minWidth: 48, minHeight: 48), onPressed: disconnect)',
+            advice: 'Açıklayıcı tooltip veya Semantics etiketi ekleyin.'
+          }
+        ]
+      },
+      {
+        id: 'aave_staking',
+        title: 'Aave V3 Teminat Sürgüsü',
+        category: 'Kredi',
+        subtitle: 'DeFi Borçlanma Risk Sürgüsü ve Tasfiye Uyarısı',
+        score: 61,
+        previewHtml: `
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Sağlık Faktörü:</span>
+              <span class="text-rose-400 font-bold">1.15 (Tasfiye Riski!)</span>
+            </div>
+            <div class="h-3 bg-slate-800 rounded-full overflow-hidden border border-rose-500">
+              <div class="h-full bg-indigo-500 w-3/5"></div>
+            </div>
+            <span class="text-[11px] text-slate-400">Onaysız otomatik işlem riski (WCAG 3.2.2 İhlali)</span>
+          </div>
+        `,
+        issues: [
+          {
+            id: 'IHLAL-AAVE-001',
+            title: 'Teminat Sürgüsü Erişilebilirlik Semantiği Olmadan Oluşturulmuş',
+            severity: 'critical',
+            category: 'Semantik & ARIA (WCAG 4.1.2)',
+            wcag: '4.1.2 (Seviye A)',
+            description: 'Standart Slider veya Semantics(slider: true) yerine sadece Container ve sürükleme hareketi kullanılmış.',
+            badCode: 'GestureDetector(onHorizontalDragUpdate: (d) => update(d), child: Container(...))',
+            goodCode: 'Semantics(slider: true, label: "Teminat faktörü", value: "65%", child: Slider(value: val, onChanged: update))',
+            advice: 'Kaydırıcı bileşenine artırma/azaltma semantiklerini ekleyin.'
+          },
+          {
+            id: 'IHLAL-AAVE-002',
+            title: 'Kullanıcı Onayı Olmadan Otomatik İşlem Başlatma',
+            severity: 'critical',
+            category: 'İşlem Güvenliği (WCAG 3.2.2)',
+            wcag: '3.2.2 (Seviye A)',
+            description: 'Sürgünün bırakılmasıyla onay istemeden otomatik blok zinciri işlemi tetiklenmektedir.',
+            badCode: '// Sürgü bırakıldığı an anında işlem yayını yapılıyor',
+            goodCode: 'void onRelease() { showDialog(context: context, builder: (_) => AlertDialog(title: Text("Onaylayın"))); }',
+            advice: 'İşlem başlatmadan önce mutlaka net bir onay penceresi gösterin.'
+          }
+        ]
+      },
+      {
+        id: 'snapshot_dao',
+        title: 'Snapshot DAO Oylaması',
+        category: 'DAO',
+        subtitle: 'Merkeziyetsiz Topluluk Oylama Kartı ve Oy Gücü',
+        score: 79,
+        previewHtml: `
+          <div class="space-y-2 text-xs">
+            <span class="font-bold text-white block">Teklif #42: Likidite Madenciliğini Yükselt</span>
+            <div class="space-y-1">
+              <label class="flex items-center space-x-2 p-1.5 bg-slate-800 rounded">
+                <input type="radio" name="vote" checked class="accent-sky-400">
+                <span class="text-slate-200">Kabul Et (14.2M UNI)</span>
+              </label>
+              <label class="flex items-center space-x-2 p-1.5 bg-slate-800 rounded">
+                <input type="radio" name="vote" class="accent-sky-400">
+                <span class="text-slate-200">Reddet (2.1M UNI)</span>
+              </label>
+            </div>
+          </div>
+        `,
+        issues: [
+          {
+            id: 'IHLAL-DAO-001',
+            title: 'Oylama Seçenekleri Grup Semantiğinden Yoksun',
+            severity: 'moderate',
+            category: 'Semantik & ARIA (WCAG 4.1.2)',
+            wcag: '4.1.2 (Seviye A)',
+            description: 'Radyo butonlarında inMutuallyExclusiveGroup semantiği eksik olduğundan ekran okuyucular seçenek sayısını duyuramaz.',
+            badCode: 'Radio(value: 0, groupValue: vote, onChanged: (v) {})',
+            goodCode: 'Semantics(inMutuallyExclusiveGroup: true, selected: vote == 0, child: RadioListTile(...))',
+            advice: 'Radyo butonlarını RadioListTile ile birlikte semantik grup içinde sunun.'
+          }
+        ]
+      }
+    ];
+
+    // Initialize UI
+    function renderPresets() {
+      const container = document.getElementById('presetsList');
+      container.innerHTML = '';
+      presets.forEach(p => {
+        const isSelected = p.id === state.selectedPresetId && !state.isUsingCustom;
+        const card = document.createElement('div');
+        card.className = `p-3 rounded-xl border cursor-pointer transition flex items-center justify-between min-h-[48px] ${
+          isSelected ? 'bg-sky-500/15 border-sky-400' : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+        }`;
+        card.innerHTML = `
+          <div class="flex items-center space-x-2.5">
+            <span class="w-7 h-7 rounded-full bg-slate-800 text-sky-400 flex items-center justify-center text-xs font-bold shrink-0">
+              ${p.category[0]}
+            </span>
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                ${p.title}
+                <span class="text-[10px] text-slate-400 font-normal">(${p.category})</span>
+              </div>
+              <div class="text-[11px] text-slate-400">${p.subtitle}</div>
+            </div>
+          </div>
+          <span class="text-base ${isSelected ? 'text-sky-400' : 'text-slate-600'}">
+            ${isSelected ? '✓' : '›'}
+          </span>
+        `;
+        card.onclick = () => selectPreset(p.id);
+        container.appendChild(card);
+      });
+
+      updatePreview();
+    }
+
+    function selectPreset(id) {
+      state.selectedPresetId = id;
+      state.isUsingCustom = false;
+      renderPresets();
+    }
+
+    function updatePreview() {
+      const container = document.getElementById('liveComponentContainer');
+      const current = presets.find(p => p.id === state.selectedPresetId) || presets[0];
+      container.innerHTML = current.previewHtml;
+    }
+
+    // Page navigation
+    function showPage(pageId) {
+      ['pageDashboard', 'pageResults', 'pageVpat', 'pageSandbox'].forEach(p => {
+        document.getElementById(p).classList.add('hidden');
+      });
+      document.getElementById(pageId).classList.remove('hidden');
+
+      // Update bottom nav active state
+      const navMap = {
+        'pageDashboard': 'bottomNavDash',
+        'pageResults': 'bottomNavResults',
+        'pageVpat': 'bottomNavVpat',
+        'pageSandbox': 'bottomNavLab'
+      };
+      ['bottomNavDash', 'bottomNavResults', 'bottomNavVpat', 'bottomNavLab'].forEach(id => {
+        const el = document.getElementById(id);
+        el.className = 'flex flex-col items-center text-slate-400 hover:text-slate-200 min-w-[48px] min-h-[44px] justify-center';
+      });
+      if (navMap[pageId]) {
+        document.getElementById(navMap[pageId]).className = 'flex flex-col items-center text-sky-400 min-w-[48px] min-h-[44px] justify-center font-bold';
+      }
+
+      document.getElementById('mainScrollArea').scrollTop = 0;
+    }
+
+    // Run Audit Simulation
+    async function executeAudit() {
+      const btn = document.getElementById('startAuditBtn');
+      const btnText = document.getElementById('startAuditText');
+      btn.disabled = true;
+      btnText.innerText = 'WCAG ve dApp Analizi Yapılıyor...';
+      btn.classList.add('opacity-75');
+
+      await new Promise(r => setTimeout(r, 700));
+
+      btn.disabled = false;
+      btnText.innerText = 'WCAG ve Erişilebilirlik Denetimini Başlat';
+      btn.classList.remove('opacity-75');
+
+      loadResultsScreen();
+      showPage('pageResults');
+    }
+
+    function loadResultsScreen() {
+      const current = presets.find(p => p.id === state.selectedPresetId) || presets[0];
+      
+      // Update score gauge
+      document.getElementById('gaugeScoreNumber').innerText = `%${current.score}`;
+      const circle = document.getElementById('gaugeSvgCircle');
+      circle.setAttribute('stroke-dasharray', `${current.score}, 100`);
+      
+      if (current.score >= 80) {
+        circle.setAttribute('class', 'text-emerald-400 transition-all duration-1000 ease-out');
+        document.getElementById('gaugeStatusIcon').innerText = '✅';
+        document.getElementById('gaugeStatusText').innerText = 'WCAG Uyumlu';
+        document.getElementById('gaugeStatusText').className = 'font-bold text-sm text-emerald-400';
+      } else {
+        circle.setAttribute('class', 'text-amber-400 transition-all duration-1000 ease-out');
+        document.getElementById('gaugeStatusIcon').innerText = '⚠️';
+        document.getElementById('gaugeStatusText').innerText = 'Düzeltme Gerekiyor';
+        document.getElementById('gaugeStatusText').className = 'font-bold text-sm text-amber-400';
+      }
+
+      // Render Issue Cards
+      const container = document.getElementById('issuesContainer');
+      container.innerHTML = '';
+      
+      let filtered = current.issues;
+      if (state.severityFilter) {
+        filtered = current.issues.filter(i => i.severity === state.severityFilter);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-4 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs text-center">
+            Bu filtrede herhangi bir erişilebilirlik kusuru bulunamadı.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach((issue, idx) => {
+        const isCritical = issue.severity === 'critical';
+        const isSerious = issue.severity === 'serious';
+        const colorClass = isCritical ? 'border-rose-500/40 bg-slate-950' : isSerious ? 'border-amber-500/40 bg-slate-950' : 'border-sky-500/40 bg-slate-950';
+        const badgeColor = isCritical ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : isSerious ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'bg-sky-500/20 text-sky-400 border-sky-500/30';
+        const sevName = isCritical ? 'Kritik İhlal' : isSerious ? 'Ciddi İhlal' : 'Orta Derece';
+
+        const card = document.createElement('div');
+        card.className = `border rounded-xl p-3 space-y-2.5 transition ${colorClass}`;
+        card.innerHTML = `
+          <div class="flex items-start justify-between cursor-pointer" onclick="toggleIssueDetail(${idx})">
+            <div class="space-y-1">
+              <div class="flex items-center space-x-1.5">
+                <span class="text-[10px] px-2 py-0.5 rounded border font-bold ${badgeColor}">${sevName}</span>
+                <span class="text-[10px] text-slate-400 font-mono">WCAG ${issue.wcag}</span>
+              </div>
+              <h4 class="text-xs font-bold text-white">${issue.title}</h4>
+              <p class="text-[11px] text-slate-400">${issue.description}</p>
+            </div>
+            <span id="issueChevron_${idx}" class="text-slate-400 text-sm ml-2">▼</span>
+          </div>
+
+          <!-- Collapsible Code Diff -->
+          <div id="issueDetail_${idx}" class="hidden space-y-2 pt-2 border-t border-slate-800 text-xs">
+            <!-- Bad Code -->
+            <div class="p-2.5 bg-rose-950/30 border border-rose-900/60 rounded-lg space-y-1">
+              <span class="text-[10px] font-bold text-rose-400 flex items-center gap-1">❌ Hatalı Flutter / Web3 Kodu</span>
+              <pre class="code-font text-[11px] text-rose-200 overflow-x-auto whitespace-pre-wrap">${issue.badCode}</pre>
+            </div>
+
+            <!-- Good Code -->
+            <div class="p-2.5 bg-emerald-950/30 border border-emerald-900/60 rounded-lg space-y-1">
+              <div class="flex justify-between items-center">
+                <span class="text-[10px] font-bold text-emerald-400 flex items-center gap-1">✅ WCAG & 48dp Uyumlu Çözüm</span>
+                <button onclick="navigator.clipboard.writeText('${issue.goodCode.replace(/'/g, "\\'")}'); alert('Çözüm kodu panoya kopyalandı!');" class="text-[10px] text-emerald-300 hover:underline">Kopyala</button>
+              </div>
+              <pre class="code-font text-[11px] text-emerald-200 overflow-x-auto whitespace-pre-wrap">${issue.goodCode}</pre>
+            </div>
+
+            <p class="text-[11px] text-amber-300/90 italic">💡 Tavsiye: ${issue.advice}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      loadVpatData(current);
+    }
+
+    function toggleIssueDetail(idx) {
+      const el = document.getElementById(`issueDetail_${idx}`);
+      const ch = document.getElementById(`issueChevron_${idx}`);
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        ch.innerText = '▲';
+      } else {
+        el.classList.add('hidden');
+        ch.innerText = '▼';
+      }
+    }
+
+    // VPAT Generation
+    function loadVpatData(preset) {
+      // Table A
+      const tableA = document.getElementById('vpatTableA');
+      tableA.innerHTML = `
+        <div class="py-1">
+          <div class="flex justify-between font-semibold text-white">
+            <span>WCAG 4.1.2 İsim, Rol, Değer</span>
+            <span class="text-amber-400 font-bold">Kısmen Destekliyor</span>
+          </div>
+          <p class="text-slate-400 text-[11px] mt-0.5">Bazı ikon butonlarında semantik rol veya erişilebilir etiket eksik.</p>
+        </div>
+        <div class="py-1">
+          <div class="flex justify-between font-semibold text-white">
+            <span>WCAG 3.2.2 Girdi Sırasında</span>
+            <span class="text-emerald-400 font-bold">Destekliyor</span>
+          </div>
+          <p class="text-slate-400 text-[11px] mt-0.5">İşlemler onay istemeden otomatik yürütülmemektedir.</p>
+        </div>
+      `;
+
+      // Table AA
+      const tableAA = document.getElementById('vpatTableAA');
+      tableAA.innerHTML = `
+        <div class="py-1">
+          <div class="flex justify-between font-semibold text-white">
+            <span>WCAG 1.4.3 Minimum Kontrast</span>
+            <span class="text-amber-400 font-bold">Kısmen Destekliyor</span>
+          </div>
+          <p class="text-slate-400 text-[11px] mt-0.5">Gas sayacı ve ikincil metinler 4.5:1 eşiğini karşılamamaktadır.</p>
+        </div>
+        <div class="py-1">
+          <div class="flex justify-between font-semibold text-white">
+            <span>WCAG 2.5.5 Dokunmatik Hedef Boyutu</span>
+            <span class="text-rose-400 font-bold">Desteklemiyor</span>
+          </div>
+          <p class="text-slate-400 text-[11px] mt-0.5">28x28 dp butonlar mobil 48x48 dp kuralının altındadır.</p>
+        </div>
+      `;
+
+      // Raw Markdown
+      const md = `# VPAT® 2.5 Uyumluluk Beyanı - ${preset.title}
+- **Tarih:** 2026-11-01
+- **Standartlar:** WCAG 2.1 Seviye A & AA, EN 301 549, Revised Section 508
+- **Erişilebilirlik Skoru:** %${preset.score}
+
+| Kriter | Uyumluluk Düzeyi | Notlar |
+| :--- | :--- | :--- |
+| **WCAG 1.4.3 Kontrast** | Kısmen Destekliyor | Koyu temada 2.1:1 oran bulundu (Hedef 4.5:1) |
+| **WCAG 2.5.5 Hedef Boyutu** | Desteklemiyor | 28x28 dp buton Android 48dp kuralını ihlal ediyor |
+| **WCAG 4.1.2 Semantik** | Kısmen Destekliyor | Etiketsiz ikon butonlar tespit edildi |
+| **WCAG 4.1.3 Durum Mesajı** | Kısmen Destekliyor | Canlı gas ücreti bildiriminde liveRegion eksik |
+`;
+      document.getElementById('vpatRawCode').innerText = md;
+    }
+
+    // Sandbox calculations
+    function calculateContrastRatio(fgHex, bgHex) {
+      function getLum(hex) {
+        const rgb = hex.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16) / 255);
+        const [r, g, b] = rgb.map(c => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      }
+      const l1 = getLum(fgHex);
+      const l2 = getLum(bgHex);
+      const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+      return Math.round(ratio * 100) / 100;
+    }
+
+    function setSandboxColor(hex) {
+      state.sandboxColor = hex;
+      document.getElementById('contrastSampleHeading').style.color = hex;
+      document.getElementById('contrastSampleSub').style.color = hex;
+
+      const ratio = calculateContrastRatio(hex, '#0F172A');
+      document.getElementById('sbContrastRatio').innerText = `${ratio}:1`;
+
+      const passesAA = ratio >= 4.5;
+      const passesLarge = ratio >= 3.0;
+      const passesAAA = ratio >= 7.0;
+
+      const ratioEl = document.getElementById('sbContrastRatio');
+      ratioEl.className = passesAA ? 'text-lg font-bold text-emerald-400' : 'text-lg font-bold text-rose-400';
+
+      document.getElementById('badgeAA').className = passesAA ? 'p-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'p-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30';
+      document.getElementById('badgeAA').innerText = `Normal AA (4.5:1) ${passesAA ? '✅' : '❌'}`;
+
+      document.getElementById('badgeLargeAA').className = passesLarge ? 'p-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'p-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30';
+      document.getElementById('badgeLargeAA').innerText = `Büyük AA (3.0:1) ${passesLarge ? '✅' : '❌'}`;
+
+      document.getElementById('badgeAAA').className = passesAAA ? 'p-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'p-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30';
+      document.getElementById('badgeAAA').innerText = `AAA (7.0:1) ${passesAAA ? '✅' : '❌'}`;
+    }
+
+    // Attach Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPresets();
+
+      document.getElementById('startAuditBtn').onclick = executeAudit;
+
+      // Top Toolbar toggles
+      document.getElementById('toggleHighContrastBtn').onclick = toggleHighContrast;
+      document.getElementById('toolbarHcBtn').onclick = toggleHighContrast;
+
+      function toggleHighContrast() {
+        state.highContrast = !state.highContrast;
+        const app = document.getElementById('appContainer');
+        const label = document.getElementById('hcLabel');
+        if (state.highContrast) {
+          app.classList.add('bg-black', 'border-cyan-400');
+          label.innerText = 'Yüksek Kontrast: Açık';
+          document.getElementById('toolbarHcBtn').classList.add('border-cyan-400', 'text-cyan-400');
+        } else {
+          app.classList.remove('bg-black', 'border-cyan-400');
+          label.innerText = 'Yüksek Kontrast: Kapalı';
+          document.getElementById('toolbarHcBtn').classList.remove('border-cyan-400', 'text-cyan-400');
+        }
+      }
+
+      // Font Scale Simulator
+      document.getElementById('toolbarScaleBtn').onclick = () => {
+        if (state.textScale === 1.0) state.textScale = 1.5;
+        else if (state.textScale === 1.5) state.textScale = 2.0;
+        else state.textScale = 1.0;
+
+        document.getElementById('scaleLabel').innerText = `%${Math.round(state.textScale * 100)} Yazı Ölçeği`;
+        document.getElementById('mainScrollArea').style.transform = `scale(${state.textScale === 2.0 ? 1.05 : 1.0})`;
+      };
+
+      // Semantics overlay
+      document.getElementById('toolbarSemanticsBtn').onclick = () => {
+        state.semanticsOverlay = !state.semanticsOverlay;
+        const ov = document.getElementById('semanticsOverlay');
+        ov.classList.toggle('hidden', !state.semanticsOverlay);
+        document.getElementById('semanticsLabel').innerText = state.semanticsOverlay ? 'Semantik: Görünür' : 'Semantik Ağaç';
+      };
+
+      // Navigation Buttons
+      document.getElementById('navSandboxBtn').onclick = () => showPage('pageSandbox');
+      document.getElementById('openSandboxBtn').onclick = () => showPage('pageSandbox');
+      document.getElementById('openVpatBtn').onclick = () => showPage('pageVpat');
+      document.getElementById('backToDashBtn').onclick = () => showPage('pageDashboard');
+      document.getElementById('backFromVpatBtn').onclick = () => showPage('pageResults');
+      document.getElementById('backFromSbBtn').onclick = () => showPage('pageDashboard');
+
+      // Bottom nav
+      document.getElementById('bottomNavDash').onclick = () => showPage('pageDashboard');
+      document.getElementById('bottomNavResults').onclick = () => showPage('pageResults');
+      document.getElementById('bottomNavVpat').onclick = () => showPage('pageVpat');
+      document.getElementById('bottomNavLab').onclick = () => showPage('pageSandbox');
+
+      // Presets vs Custom Tabs
+      document.getElementById('tabPresetsBtn').onclick = () => {
+        document.getElementById('tabPresetsBtn').className = 'flex-1 py-2.5 border-b-2 border-sky-400 text-sky-400 flex items-center justify-center space-x-1';
+        document.getElementById('tabCustomBtn').className = 'flex-1 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center justify-center space-x-1';
+        document.getElementById('presetsSelectorArea').classList.remove('hidden');
+        document.getElementById('customInputArea').classList.add('hidden');
+        state.isUsingCustom = false;
+        updatePreview();
+      };
+
+      document.getElementById('tabCustomBtn').onclick = () => {
+        document.getElementById('tabCustomBtn').className = 'flex-1 py-2.5 border-b-2 border-sky-400 text-sky-400 flex items-center justify-center space-x-1';
+        document.getElementById('tabPresetsBtn').className = 'flex-1 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center justify-center space-x-1';
+        document.getElementById('customInputArea').classList.remove('hidden');
+        document.getElementById('presetsSelectorArea').classList.add('hidden');
+        state.isUsingCustom = true;
+        document.getElementById('liveComponentContainer').innerHTML = `
+          <div class="text-center py-4 text-xs text-slate-400">
+            Özel dApp arayüzü veya kod parçacığı denetime hazır.
+          </div>
+        `;
+      };
+
+      // Severity Filter Buttons
+      document.getElementById('filterAllBtn').onclick = () => setFilter(null, 'filterAllBtn');
+      document.getElementById('filterCriticalBtn').onclick = () => setFilter('critical', 'filterCriticalBtn');
+      document.getElementById('filterSeriousBtn').onclick = () => setFilter('serious', 'filterSeriousBtn');
+      document.getElementById('filterModerateBtn').onclick = () => setFilter('moderate', 'filterModerateBtn');
+
+      function setFilter(sev, btnId) {
+        state.severityFilter = sev;
+        ['filterAllBtn', 'filterCriticalBtn', 'filterSeriousBtn', 'filterModerateBtn'].forEach(id => {
+          document.getElementById(id).className = 'px-3 py-1.5 min-h-[36px] rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700 font-semibold shrink-0';
+        });
+        document.getElementById(btnId).className = 'px-3 py-1.5 min-h-[36px] rounded-full bg-sky-500 text-slate-950 font-bold shrink-0';
+        loadResultsScreen();
+      }
+
+      // VPAT Format toggle
+      document.getElementById('vpatTabVisualBtn').onclick = () => {
+        document.getElementById('vpatVisualArea').classList.remove('hidden');
+        document.getElementById('vpatRawArea').classList.add('hidden');
+        document.getElementById('vpatTabVisualBtn').className = 'flex-1 py-2 border-b-2 border-sky-400 text-sky-400';
+        document.getElementById('vpatTabMdBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+        document.getElementById('vpatTabJsonBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+      };
+
+      document.getElementById('vpatTabMdBtn').onclick = () => {
+        document.getElementById('vpatVisualArea').classList.add('hidden');
+        document.getElementById('vpatRawArea').classList.remove('hidden');
+        document.getElementById('vpatTabMdBtn').className = 'flex-1 py-2 border-b-2 border-sky-400 text-sky-400';
+        document.getElementById('vpatTabVisualBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+        document.getElementById('vpatTabJsonBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+      };
+
+      document.getElementById('vpatTabJsonBtn').onclick = () => {
+        document.getElementById('vpatVisualArea').classList.add('hidden');
+        document.getElementById('vpatRawArea').classList.remove('hidden');
+        document.getElementById('vpatTabJsonBtn').className = 'flex-1 py-2 border-b-2 border-sky-400 text-sky-400';
+        document.getElementById('vpatTabVisualBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+        document.getElementById('vpatTabMdBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+
+        const json = {
+          raporTipi: "VPAT_2.5_WCAG_EN301549",
+          hedef: presets.find(p => p.id === state.selectedPresetId)?.title || "Web3 dApp",
+          tarih: "2026-11-01",
+          skor: presets.find(p => p.id === state.selectedPresetId)?.score || 68,
+          tablo_WCAG_A: [
+            { kriter: "4.1.2 İsim, Rol, Değer", durum: "Kısmen Destekliyor" },
+            { kriter: "3.2.2 Girdi Sırasında", durum: "Destekliyor" }
+          ],
+          tablo_WCAG_AA: [
+            { kriter: "1.4.3 Kontrast", durum: "Kısmen Destekliyor" },
+            { kriter: "2.5.5 Hedef Boyutu", durum: "Desteklemiyor" }
+          ]
+        };
+        document.getElementById('vpatRawCode').innerText = JSON.stringify(json, null, 2);
+      };
+
+      document.getElementById('copyVpatBtn').onclick = () => {
+        const text = document.getElementById('vpatRawCode').innerText;
+        navigator.clipboard.writeText(text);
+        const copyBtnText = document.getElementById('copyVpatText');
+        copyBtnText.innerText = '✅ Panoya Kopyalandı!';
+        setTimeout(() => copyBtnText.innerText = 'Mevcut VPAT Raporunu Panoya Kopyala', 2000);
+      };
+
+      // Sandbox Subtabs
+      document.getElementById('sbTabContrastBtn').onclick = () => {
+        document.getElementById('sbContrastArea').classList.remove('hidden');
+        document.getElementById('sbTargetArea').classList.add('hidden');
+        document.getElementById('sbTypeArea').classList.add('hidden');
+        document.getElementById('sbTabContrastBtn').className = 'flex-1 py-2 border-b-2 border-sky-400 text-sky-400';
+        document.getElementById('sbTabTargetBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+        document.getElementById('sbTabTypeBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+      };
+
+      document.getElementById('sbTabTargetBtn').onclick = () => {
+        document.getElementById('sbTargetArea').classList.remove('hidden');
+        document.getElementById('sbContrastArea').classList.add('hidden');
+        document.getElementById('sbTypeArea').classList.add('hidden');
+        document.getElementById('sbTabTargetBtn').className = 'flex-1 py-2 border-b-2 border-sky-400 text-sky-400';
+        document.getElementById('sbTabContrastBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+        document.getElementById('sbTabTypeBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+      };
+
+      document.getElementById('sbTabTypeBtn').onclick = () => {
+        document.getElementById('sbTypeArea').classList.remove('hidden');
+        document.getElementById('sbContrastArea').classList.add('hidden');
+        document.getElementById('sbTargetArea').classList.add('hidden');
+        document.getElementById('sbTabTypeBtn').className = 'flex-1 py-2 border-b-2 border-sky-400 text-sky-400';
+        document.getElementById('sbTabContrastBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+        document.getElementById('sbTabTargetBtn').className = 'flex-1 py-2 border-b-2 border-transparent text-slate-400';
+      };
+
+      // Touch Target Slider
+      const slider = document.getElementById('sbSizeSlider');
+      slider.oninput = (e) => {
+        const val = e.target.value;
+        document.getElementById('widthValText').innerText = val;
+        document.getElementById('heightValText').innerText = val;
+        const btn = document.getElementById('sbDynamicBtn');
+        btn.style.width = `${val}px`;
+        btn.style.height = `${val}px`;
+        document.getElementById('sbDynamicBtnLabel').innerText = `${val}x${val}`;
+
+        const status = document.getElementById('sbTargetStatus');
+        if (val >= 48) {
+          btn.className = 'bg-emerald-500 text-white rounded-md flex items-center justify-center text-xs font-bold transition-all duration-100';
+          status.className = 'p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold';
+          status.innerText = '✅ Standartlara Uygun: Android 48x48 dp ve iOS 44x44 pt koşulunu sağlıyor.';
+        } else {
+          btn.className = 'bg-rose-500 text-white rounded-md flex items-center justify-center text-xs font-bold transition-all duration-100';
+          status.className = 'p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold';
+          status.innerText = `⚠️ Standart Dışı: Android 48x48 dp kuralı için ${48 - val} dp eksik.`;
+        }
+      };
+
+      document.getElementById('sbAutoFixColorBtn').onclick = () => {
+        setSandboxColor('#94A3B8');
+        alert('WCAG AA uyumlu 5.2:1 kontrast sağlayan açık gri renk tonu uygulandı!');
+      };
+    });
+  </script>
+</body>
+</html>
